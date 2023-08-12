@@ -27,8 +27,8 @@ test with big-ol-fella.jpg, it's just a lazy midjourney image blown up with giga
     --outputPath=/absolute/path
     // probably needs to be an absolute path. defaults to current directory
 
-    --offsets='{x:[0-1], y:[0-1]}'
-    // offsets='{x:0.5, y:0.5}' will center the image (monitors in offsets.json currently does nothing)
+    --offsets='{"x":[0-1], "y":[0-1]}'
+    // offsets='{"x":0.5, "y":0.5}' will center the image (monitors in offsets.json currently does nothing)
 
     --verbose
 ```
@@ -39,6 +39,8 @@ examples
     node ./hyprpaper-span.js ./big-ol-fella.jpg --apply --rm
     
     node ./hyprpaper-span.js ./big-ol-fella.jpg --apply --outputPath=/home/me/Wallpapers/bigOlFella
+
+    node ./hyprpaper-span.js ./big-ol-fella.jpg --apply --offsets='{"x": 0.5, "y": 0.5}'
 
     node ./hyprpaper-span.js ./big-ol-fella.jpg --apply --offsets=$(cat offsets.json | jq -c)
 ```
