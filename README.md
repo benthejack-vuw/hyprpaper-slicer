@@ -44,7 +44,3 @@ examples
 
     node ./hyprpaper-span.js ./big-ol-fella.jpg --apply --offsets=$(cat offsets.json | jq -c)
 ```
-
-
-
-apply will apply the wallpapers
