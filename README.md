@@ -1,6 +1,7 @@
 # stretch an image over multiple monitors with hyprland/hyprpaper
 
 you can use this to crop a big image to span over multiple monitors.
+
 test with big-ol-fella.jpg, it's just a lazy midjourney image blown up with gigapixel.
 
 ## Dependencies
@@ -12,7 +13,7 @@ test with big-ol-fella.jpg, it's just a lazy midjourney image blown up with giga
 ## Usage
 ```
     node ./hyprpaper-span.js [optional: args] [image]
-    
+
     --apply
     // don't just create the images, apply them using hyprpaper
 
