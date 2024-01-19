@@ -44,7 +44,7 @@ const applyRatio = (monitor, ratio) => ({
 });
 
 const transformAll = (monitors) => {
-    return monitors.map(applyTransformations)
+    return monitors.map(applyTransformations);
 }
 
 const screenCanvasSize = (monitors) => {
@@ -69,6 +69,7 @@ const crop = async ({monitor, offset, image, outputPath = __dirname}) => {
 };
 
 const setWallpaper = async ({ monitor, image }) => {
+    console.log('unloading:', image, await execute(`hyprctl hyprpaper unload ${image}`));
     console.log('preloading:', image, await execute(`hyprctl hyprpaper preload ${image}`));
     console.log('setting', image, await execute(`hyprctl hyprpaper wallpaper "${monitor},${image}"`));
 };
@@ -77,10 +78,10 @@ const cropMonitors = async ({
     image,
     outputPath,
     monitors,
-    offsets,
+    offsets = JSON.stringify({x: 0, y: 0, monitors: []}),
 }) => {
     const monitorConfig = JSON.parse(monitors ?? await execute('hyprctl monitors -j'));
-    const offsetsConfig = JSON.parse(offsets ?? {x: 0, y: 0, monitors: []});
+    const offsetsConfig = JSON.parse(offsets);
     const transformed = transformAll(monitorConfig);
 
     const imgw = (await imageSize(image)).width;
@@ -90,12 +91,17 @@ const cropMonitors = async ({
 
     const ratio = Math.min(imgw / screenw, imgh / screenh);
     const scaled = transformed.map((trns) => applyRatio(trns, ratio));
+
+    const scaledw = screenCanvasSize(scaled).width;
+    const scaledh = screenCanvasSize(scaled).height;
+
     const offset = {
-        x: (offsetsConfig.x * imgw) - (offsetsConfig.x * screenw),
-        y: (offsetsConfig.y * imgh) - (offsetsConfig.y * screenh)
+        x: (offsetsConfig.x * imgw) - (offsetsConfig.x * scaledw),
+        y: (offsetsConfig.y * imgh) - (offsetsConfig.y * scaledh)
     }
 
     const cropping = scaled.map((scaledMonitor) => crop({monitor: scaledMonitor, offset, image, outputPath}));
+
     return Promise.all(cropping);
 }
 
